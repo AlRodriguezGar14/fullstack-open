@@ -5,10 +5,11 @@ import {Total} from "./Total";
 const App = () => {
   // const-definitions
 const course = [
-  { part: "Fundamentals of React", exercises: 10 },
-  { part: "Using props to pass data", exercises: 7 },
-  { part: "State of a component", exercises: 14 },
+  { name: "Fundamentals of React", exercises: 10 },
+  { name: "Using props to pass data", exercises: 7 },
+  { name: "State of a component", exercises: 14 },
 ];
+
 
 
   return (

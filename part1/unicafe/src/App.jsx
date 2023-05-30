@@ -53,9 +53,17 @@ const App = () => {
     <div>
       <div className='feedbackButtons'>
         <h2>give feedback</h2>
-        <FeedbackButtons handle={handleGood} text="good"/>
-        <FeedbackButtons handle={handleNeutral} text="neutral"/>
-        <FeedbackButtons handle={handleBad} text="bad"/>
+       <table>
+        <thead></thead>
+        <tbody>
+          <tr>
+            <td><FeedbackButtons handle={handleGood} text="good"/></td>
+            <td><FeedbackButtons handle={handleNeutral} text="neutral"/></td>
+            <td><FeedbackButtons handle={handleBad} text="bad"/></td>
+          </tr>
+        </tbody>
+        <tfoot></tfoot>
+      </table>
       </div>
       <div className='statistics'>
         <h2>statistics</h2>

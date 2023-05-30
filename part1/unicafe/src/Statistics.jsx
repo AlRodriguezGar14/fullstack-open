@@ -4,13 +4,18 @@ export const Statistics = (props) => {
         return (
             <div>
             <ul>
-              <li>good {props.good}</li>
-              <li>neutral {props.neutral}</li>
-              <li>bad {props.bad}</li>
-              <li>all {props.totalVotes}</li>
+            <li>
+              <StatisticLine text="Good" statistic={props.good}/>
+            </li>
+            <li>
+              <StatisticLine text="Neutral" statistic={props.neutral}/>
+            </li>
+            <li>
+              <StatisticLine text="Bad" statistic={props.bad}/>
+            </li>
             </ul>
-            <p>Average {props.average.toFixed(2)}</p>
-            <p>Positive votes {props.totalPositives.toFixed(2)}%</p>
+              <StatisticLine text="Average" statistic={props.average.toFixed(2)}/>
+              <StatisticLine text="Positive votes" statistic={props.totalPositives.toFixed(2)}/>
             </div>
         )
     } else {
@@ -20,6 +25,15 @@ export const Statistics = (props) => {
             </div>
         )
     }
+}
+
+
+const StatisticLine = (props) => {
+    return (
+        <>
+          <p>{props.text}: {props.statistic}</p>
+        </>
+    )
 }
 
 

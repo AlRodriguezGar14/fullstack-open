@@ -1,4 +1,6 @@
 import { useState } from 'react'
+// import Statistics from './Statistics'
+import { Statistics } from './Statistics'
 
 const App = () => {
   // save clicks of each button to its own state
@@ -7,6 +9,7 @@ const App = () => {
   const [bad, setBad] = useState(0)
 
   const [average, setAverage] = useState(0)
+  const [totalVotes, setTotalVotes] = useState(0)
   const [totalPositives, setTotalPositives] = useState(0)
 
   const handleGood = () => {
@@ -30,12 +33,19 @@ const App = () => {
 
   const handleAverage = (good, neutral, bad) => {
 
-      console.log("calculating average...")
-      const totalVotes = good + neutral + bad
+      console.log("calculating average...", good, neutral, bad)
+      const newTotalVotes = good + neutral + bad
+      setTotalVotes(newTotalVotes)
       const newAverage = (good - bad) / totalVotes
-      setAverage(newAverage)
+      if (newAverage === Infinity) {
+        setAverage(1)
+      } else if (newAverage === -Infinity) {
+        setAverage(-1)
+      } else {
+        setAverage(newAverage)
+      }
 
-      const positives = (good * 100) / totalVotes
+      const positives = (good * 100) / newTotalVotes
       setTotalPositives(positives)
   }
   return (
@@ -48,13 +58,7 @@ const App = () => {
       </div>
       <div className='statistics'>
         <h2>statistics</h2>
-        <ul>
-          <li>good {good}</li>
-          <li>neutral {neutral}</li>
-          <li>bad {bad}</li>
-      </ul>
-      <p>Average {average.toFixed(2)}</p>
-      <p>Positive votes {totalPositives.toFixed(2)}%</p>
+      <Statistics totalVotes={totalVotes} average={average} totalPositives={totalPositives} good={good} neutral={neutral} bad={bad} />
       </div>
     </div>
   )

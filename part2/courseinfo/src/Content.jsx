@@ -3,7 +3,11 @@ export const Content = ({course}) => {
     
     return (
             <div>
-            <p>{course.name}: {course.exercises}</p>
+              <h2>{course.name}</h2>
+              {course.parts.map(part => (
+                  <p key={`parts${part.id}`}>{part.name}: {part.exercises}</p>
+              )
+              )}
             </div>
         )
 }

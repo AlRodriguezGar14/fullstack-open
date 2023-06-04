@@ -1,4 +1,4 @@
-export const Total = (props) => (
+export const Total = ({course}) => (
 
-    <p>Number of exercises: {props.exercises.reduce((accumulator, current) => accumulator + current.exercises, 0)}</p>
+    <p>Number of exercises: {course.parts.reduce((accumulator, current) => accumulator + current.exercises, 0)}</p>
 )

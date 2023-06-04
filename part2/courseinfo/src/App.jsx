@@ -62,7 +62,6 @@ const courseList = [
       {courseList.map(course => (
           <div key={`course-content${course.id}`}>
           <Content course={course} />
-          <Total course={course}/>
           </div>
       )
       )}

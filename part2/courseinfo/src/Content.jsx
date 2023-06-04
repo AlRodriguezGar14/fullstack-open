@@ -1,3 +1,5 @@
+import { Total } from "./Total"
+
 export const Content = ({course}) => {
 
     
@@ -8,6 +10,7 @@ export const Content = ({course}) => {
                   <p key={`parts${part.id}`}>{part.name}: {part.exercises}</p>
               )
               )}
+              <Total course={course}/>
             </div>
         )
 }

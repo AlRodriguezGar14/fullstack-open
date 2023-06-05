@@ -18,7 +18,7 @@ const AddPersonForm = ({
       return;
     }
     if (newPhone !== "") {
-      const newPersonObject = { name: newName, phone: newPhone };
+      const newPersonObject = { name: newName, number: newPhone };
       setPersons(persons.concat(newPersonObject));
       alert(`${newName} added to the list`);
       setNewName("");

@@ -1,19 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Filter from "./components/Filter";
 import AddPersonForm from "./components/AddPersonForm";
 import Persons from "./components/Persons";
 
 const App = () => {
   const personList = [
-    { name: "Arto Hellas", phone: "040-123456" },
-    { name: "Ada Lovelace", phone: "39-44-5323523" },
-    { name: "Dan Abramov", phone: "12-43-234345" },
-    { name: "Mary Poppendieck", phone: "39-23-6423122" },
+    { name: "Arto Hellas", number: "040-123456" },
+    { name: "Ada Lovelace", number: "39-44-5323523" },
+    { name: "Dan Abramov", number: "12-43-234345" },
+    { name: "Mary Poppendieck", number: "39-23-6423122" },
   ];
-  const [persons, setPersons] = useState(personList);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/persons").then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   const handleUser = (event) => {
     event.preventDefault();
@@ -27,7 +34,7 @@ const App = () => {
       return;
     }
     if (newPhone !== "") {
-      const newPersonObject = { name: newName, phone: newPhone };
+      const newPersonObject = { name: newName, number: newPhone };
       setPersons(persons.concat(newPersonObject));
       alert(`${newName} added to the list`);
       setNewName("");

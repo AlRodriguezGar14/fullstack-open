@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const AddPersonForm = ({
   newName,
   newPhone,
@@ -19,10 +21,17 @@ const AddPersonForm = ({
     }
     if (newPhone !== "") {
       const newPersonObject = { name: newName, number: newPhone };
-      setPersons(persons.concat(newPersonObject));
-      alert(`${newName} added to the list`);
-      setNewName("");
-      setNewPhone("");
+      // setPersons(persons.concat(newPersonObject));
+
+      axios
+        .post("http://localhost:3001/persons", newPersonObject)
+        .then((response) => {
+          setPersons(persons.concat(response.data));
+          alert(`${newName} added to the list`);
+          console.log(response);
+          setNewPhone("");
+          setNewName("");
+        });
     }
   };
 

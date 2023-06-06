@@ -1,4 +1,5 @@
 import axios from "axios";
+import phonebookService from "../services/phonebook";
 
 const AddPersonForm = ({
   newName,
@@ -10,28 +11,44 @@ const AddPersonForm = ({
 }) => {
   const handleUser = (event) => {
     event.preventDefault();
-    if (
-      persons.some(
-        (person) =>
-          person.name.toLowerCase().trim() === newName.toLowerCase().trim()
-      )
-    ) {
-      alert(`${newName} is already added`);
-      return;
+
+    const newSearchable = newName.toLowerCase().trim();
+
+    const existing =
+      persons.find(
+        (person) => person.name.toLowerCase().trim() === newSearchable
+      ) || "No Match";
+    // console.log(existing);
+
+    if (existing !== "No Match" && newPhone != "") {
+      if (
+        window.confirm(
+          `${newName} is already added; do you want to update the phone number?`
+        )
+      ) {
+        const newUser = { ...existing, number: newPhone };
+        console.log("toUpdate...", newUser);
+        phonebookService.update(existing.id, newUser).then((returnPerson) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== existing.id ? person : returnPerson
+            )
+          );
+        });
+        return;
+      } else {
+        return;
+      }
     }
     if (newPhone !== "") {
       const newPersonObject = { name: newName, number: newPhone };
       // setPersons(persons.concat(newPersonObject));
-
-      axios
-        .post("http://localhost:3001/persons", newPersonObject)
-        .then((response) => {
-          setPersons(persons.concat(response.data));
-          alert(`${newName} added to the list`);
-          console.log(response);
-          setNewPhone("");
-          setNewName("");
-        });
+      phonebookService.create(newPersonObject).then((returnPerson) => {
+        setPersons(persons.concat(returnPerson));
+        setNewPhone("");
+        setNewName("");
+        alert(`${returnPerson.name} added to the list`);
+      });
     }
   };
 

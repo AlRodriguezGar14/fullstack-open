@@ -1,4 +1,3 @@
-// import axios from "axios";
 import phonebookService from "../services/phonebook.js";
 
 const Persons = ({ personsDisplay, setPersons }) => {
@@ -13,7 +12,6 @@ const Persons = ({ personsDisplay, setPersons }) => {
           setPersons(updatedPersons);
         });
       });
-      // axios.delete(url).then((response) => console.log(response));
       return;
     }
   };

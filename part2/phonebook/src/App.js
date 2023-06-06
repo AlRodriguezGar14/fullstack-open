@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import phonebookService from "./services/phonebook";
 import Filter from "./components/Filter";
 import AddPersonForm from "./components/AddPersonForm";
 import Persons from "./components/Persons";
@@ -11,9 +12,10 @@ const App = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
-    });
+    phonebookService.getAll().then((users) => setPersons(users));
+    // axios.get("http://localhost:3001/persons").then((response) => {
+    //   setPersons(response.data);
+    // });
   }, []);
 
   const handleUser = (event) => {
@@ -69,7 +71,7 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <div>
-        <Persons personsDisplay={personsDisplay} />
+        <Persons personsDisplay={personsDisplay} setPersons={setPersons} />
       </div>
     </div>
   );

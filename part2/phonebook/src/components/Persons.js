@@ -1,9 +1,23 @@
-const printIds = (id) => {
-  // event.preventDefault();
-  console.log(id);
-};
+// import axios from "axios";
+import phonebookService from "../services/phonebook.js";
 
-const Persons = ({ personsDisplay }) => {
+const Persons = ({ personsDisplay, setPersons }) => {
+  const deletePerson = (id) => {
+    const url = `http://localhost:3001/persons/${id}`;
+    const personToRemove = personsDisplay.find((person) => person.id === id);
+
+    if (window.confirm(`Do you want to delete ${personToRemove.name}`)) {
+      phonebookService.remove(id).then(() => {
+        phonebookService.getAll().then((response) => {
+          const updatedPersons = response;
+          setPersons(updatedPersons);
+        });
+      });
+      // axios.delete(url).then((response) => console.log(response));
+      return;
+    }
+  };
+
   return (
     <div>
       {personsDisplay.map((person) => (
@@ -11,7 +25,7 @@ const Persons = ({ personsDisplay }) => {
           <p>
             {person.name} - {person.number}
           </p>
-          <button onClick={() => printIds(person.id)}>print id</button>
+          <button onClick={() => deletePerson(person.id)}>delete</button>
         </div>
       ))}
     </div>

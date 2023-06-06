@@ -4,18 +4,20 @@ import phonebookService from "./services/phonebook";
 import Filter from "./components/Filter";
 import AddPersonForm from "./components/AddPersonForm";
 import Persons from "./components/Persons";
+import Message from "./components/Message";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [search, setSearch] = useState("");
+  const [message, setMessage] = useState({ action: null, content: null });
 
   useEffect(() => {
-    phonebookService.getAll().then((users) => setPersons(users));
-    // axios.get("http://localhost:3001/persons").then((response) => {
-    //   setPersons(response.data);
-    // });
+    phonebookService
+      .getAll()
+      .then((users) => setPersons(users))
+      .catch((error) => console.log(`something went wrong: ${error}`));
   }, []);
 
   const handleUser = (event) => {
@@ -61,6 +63,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Filter setSearch={setSearch} />
       <h2>add a new</h2>
+      <Message message={message} setMessage={setMessage} />
       <AddPersonForm
         newName={newName}
         newPhone={newPhone}
@@ -68,6 +71,8 @@ const App = () => {
         setNewName={setNewName}
         setNewPhone={setNewPhone}
         setPersons={setPersons}
+        message={message}
+        setMessage={setMessage}
       />
       <h2>Numbers</h2>
       <div>

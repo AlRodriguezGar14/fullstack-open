@@ -8,6 +8,7 @@ const AddPersonForm = ({
   setNewName,
   setNewPhone,
   setPersons,
+  setMessage,
 }) => {
   const handleUser = (event) => {
     event.preventDefault();
@@ -27,13 +28,16 @@ const AddPersonForm = ({
         )
       ) {
         const newUser = { ...existing, number: newPhone };
-        console.log("toUpdate...", newUser);
         phonebookService.update(existing.id, newUser).then((returnPerson) => {
+          const updated = returnPerson;
           setPersons(
             persons.map((person) =>
               person.id !== existing.id ? person : returnPerson
             )
           );
+          setMessage({ action: "updated", text: updated.name });
+          setNewPhone("");
+          setNewName("");
         });
         return;
       } else {
@@ -42,12 +46,13 @@ const AddPersonForm = ({
     }
     if (newPhone !== "") {
       const newPersonObject = { name: newName, number: newPhone };
-      // setPersons(persons.concat(newPersonObject));
       phonebookService.create(newPersonObject).then((returnPerson) => {
-        setPersons(persons.concat(returnPerson));
+        const returned = returnPerson;
+        setPersons(persons.concat(returned));
         setNewPhone("");
         setNewName("");
-        alert(`${returnPerson.name} added to the list`);
+        setMessage({ action: "added", text: returned.name });
+        // alert(`${returnPerson.name} added to the list`);
       });
     }
   };
@@ -62,17 +67,19 @@ const AddPersonForm = ({
   };
 
   return (
-    <form onSubmit={handleUser}>
-      <div>
-        name: <input value={newName} onChange={handleName} />
-      </div>
-      <div>
-        number: <input value={newPhone} onChange={handlePhone} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
+    <div>
+      <form onSubmit={handleUser}>
+        <div>
+          name: <input value={newName} onChange={handleName} />
+        </div>
+        <div>
+          number: <input value={newPhone} onChange={handlePhone} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+    </div>
   );
 };
 

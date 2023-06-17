@@ -4,6 +4,8 @@ const app = express();
 const PORT = 3001;
 app.listen(PORT);
 
+app.use(express.json());
+
 console.log(`app is running at port ${3001}`);
 
 let phonebook = [
@@ -46,4 +48,47 @@ app.get("/info", (req, res) => {
         </div>`;
 
   res.send(info);
+});
+
+app.get("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const person = phonebook.find((p) => p.id === id);
+  console.log(phonebook);
+  console.log(person);
+
+  if (!person) {
+    res.status(404).end();
+    return;
+  }
+  res.json(person);
+});
+
+app.delete("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  phonebook = phonebook.filter((p) => p.id !== id);
+  res.status(204).end();
+});
+
+app.post("/api/persons", (req, res) => {
+  const person = req.body;
+
+  if (!person.name || !person.number) {
+    return res.status(400).json({
+      error: "be sure that you added both name and number",
+    });
+  }
+
+  const searchDuplication = phonebook.find((n) => n.name === person.name);
+  if (searchDuplication) {
+    return res.status(400).json({
+      error: "name must be unique",
+    });
+  }
+
+  const id = Math.max(...phonebook.map((p) => p.id)) + 1;
+  person.id = id;
+
+  phonebook = phonebook.concat(person);
+
+  res.json(person);
 });

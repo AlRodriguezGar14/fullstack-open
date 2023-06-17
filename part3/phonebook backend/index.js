@@ -74,7 +74,7 @@ app.post("/api/persons", (req, res) => {
 
   if (!person.name || !person.number) {
     return res.status(400).json({
-      error: "be sure that you added both name and number",
+      error: "be sure that you added both the name and the number",
     });
   }
 

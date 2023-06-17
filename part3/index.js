@@ -35,3 +35,15 @@ app.get("/api/persons", (req, res) => {
   }
   res.json(phonebook);
 });
+
+app.get("/info", (req, res) => {
+  let date = new Date();
+  const info = `
+        <div>
+          <h2>Phonebook has info for ${phonebook.length}</h2>
+          <br/>
+          <p>${date}</p>
+        </div>`;
+
+  res.send(info);
+});

@@ -1,5 +1,5 @@
 const express = require("express");
-const morgan = require("morgan");
+// const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 
@@ -10,12 +10,12 @@ app.use(express.json());
 app.use(express.static("build"));
 app.use(cors());
 
-morgan.token("content", (req, res) => JSON.stringify(req.body));
-app.use(
-  morgan(
-    ":method :url :status :res[content-length] - :response-time ms :content"
-  )
-);
+// morgan.token("content", (req, res) => JSON.stringify(req.body));
+// app.use(
+//   morgan(
+//     ":method :url :status :res[content-length] - :response-time ms :content"
+//   )
+// );
 
 console.log(`app is running at port ${3001}`);
 

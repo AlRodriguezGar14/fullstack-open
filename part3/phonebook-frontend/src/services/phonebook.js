@@ -1,4 +1,5 @@
 import axios from "axios";
+// }
 const baseUrl = "/api/persons";
 
 const getAll = () => {
@@ -12,15 +13,20 @@ const create = (newObject) => {
 };
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject);
-  return request
-    .then((response) => {
-      console.log("updated");
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(`something went wrong: ${error}`);
-    });
+  const req = axios.put(`${baseUrl}/${id}`, newObject);
+  return req.then((res) => res.data);
+  //   const request = axios.put(`${baseUrl}/${id}`, newObject);
+  //   console.log(`${baseUrl}/${id}`, newObject);
+  //
+  //   return request
+  //     .then((response) => {
+  //       console.log("updated");
+  //       return response.data;
+  //     })
+  //     .catch((error) => {
+  //       console.log(`${JSON.stringify(request)}`);
+  //       console.log(`something went wrong: ${error}`);
+  //     });
 };
 
 const remove = (id) => {

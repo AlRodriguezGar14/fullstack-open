@@ -28,17 +28,22 @@ const AddPersonForm = ({
         )
       ) {
         const newUser = { ...existing, number: newPhone };
-        phonebookService.update(existing.id, newUser).then((returnPerson) => {
-          const updated = returnPerson;
-          setPersons(
-            persons.map((person) =>
-              person.id !== existing.id ? person : returnPerson
-            )
-          );
-          setMessage({ action: "updated", text: updated.name });
-          setNewPhone("");
-          setNewName("");
-        });
+        phonebookService
+          .update(existing.id, newUser)
+          .then((returnPerson) => {
+            const updated = returnPerson;
+            setPersons(
+              persons.map((person) =>
+                person.id !== existing.id ? person : returnPerson
+              )
+            );
+            setMessage({ action: "updated", text: updated.name });
+            setNewPhone("");
+            setNewName("");
+          })
+          .catch((error) => {
+            console.log("something went wrong", error);
+          });
         return;
       } else {
         return;

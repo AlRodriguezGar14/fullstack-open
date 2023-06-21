@@ -12,9 +12,22 @@ app.listen(PORT, () => {
 
 const url = process.env.MONGODB_URI;
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+// this has to be the last loaded middleware.
+
 app.use(express.json());
 app.use(express.static("build"));
 app.use(cors());
+app.use(errorHandler);
 
 // morgan.token("content", (req, res) => JSON.stringify(req.body));
 // app.use(
@@ -142,7 +155,7 @@ app.post("/api/persons", (req, res) => {
   });
 });
 
-app.put("api/persons/:id", (req, res, next) => {
+app.put("/api/persons/:id", (req, res, next) => {
   const body = req.body;
 
   const person = {
@@ -150,9 +163,9 @@ app.put("api/persons/:id", (req, res, next) => {
     number: body.number,
   };
 
-  Person.findOneAndUpdate(req.params.id, person, { new: true })
+  Person.findByIdAndUpdate(req.params.id, person, { new: true })
     .then((updatedPerson) => {
       res.json(updatedPerson);
     })
-    .catch((err) => next(err));
+    .catch((err) => console.log(err));
 });

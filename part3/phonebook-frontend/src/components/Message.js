@@ -12,6 +12,10 @@ const Message = ({ message, setMessage }) => {
     borderRadius: 10,
     backgroundColor: "AliceBlue",
   };
+  if (message.action === "error") {
+    blockStyle.color = "red";
+    blockStyle.border = "2px solid red";
+  }
   useEffect(() => {
     if (message.text != null) {
       setVisible(true);

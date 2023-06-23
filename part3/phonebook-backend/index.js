@@ -17,6 +17,8 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
   }
 
   next(error);
@@ -40,9 +42,32 @@ app.use(errorHandler);
 mongoose.set("strictQuery", false);
 mongoose.connect(url);
 
+const phoneValidator = (val) => {
+  const [a, b] = val.split("-");
+
+  if (
+    (a.length === 2 || a.length === 3) &&
+    val.length >= 8 &&
+    !isNaN(a) === true
+  ) {
+    console.log(a.length);
+    return !isNaN(Number(b));
+  }
+  return false;
+};
+
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String || Number,
+  name: {
+    type: String,
+    minLength: 3,
+    required: true,
+  },
+  number: {
+    type: String,
+    minLength: 8,
+    validate: [phoneValidator, "incorrect phone number format"],
+    required: true,
+  },
 });
 
 personSchema.set("toJSON", {
@@ -124,22 +149,14 @@ app.delete("/api/persons/:id", (req, res, next) => {
   // res.status(204).end();
 });
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const person = req.body;
 
-  if (person.name === undefined) {
-    return res.status(404).json({ error: "name missing" });
-  }
-  if (person.number === undefined) {
-    return res.status(404).json({ error: "number missing" });
-  }
-
-  // TODO: MAKE THIS WORK WITH THE DATABASE
-  // const searchDuplication = phonebook.find((n) => n.name === person.name);
-  // if (searchDuplication) {
-  //   return res.status(400).json({
-  //     error: "name must be unique",
-  //   });
+  // if (person.name === undefined) {
+  //   return res.status(404).json({ error: "name missing" });
+  // }
+  // if (person.number === undefined) {
+  //   return res.status(404).json({ error: "number missing" });
   // }
 
   // const id = Math.max(...phonebook.map((p) => p.id)) + 1;
@@ -150,20 +167,22 @@ app.post("/api/persons", (req, res) => {
     name: person.name,
     number: person.number,
   });
-  newPerson.save().then((savedPerson) => {
-    res.json(savedPerson);
-  });
+  newPerson
+    .save()
+    .then((savedPerson) => {
+      res.json(savedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 app.put("/api/persons/:id", (req, res, next) => {
-  const body = req.body;
+  const { name, number } = req.body;
 
-  const person = {
-    name: body.name,
-    number: body.number,
-  };
-
-  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+  Person.findByIdAndUpdate(
+    req.params.id,
+    { name, number },
+    { new: true, runValidators: true, context: "query" }
+  )
     .then((updatedPerson) => {
       res.json(updatedPerson);
     })

@@ -21,7 +21,7 @@ const AddPersonForm = ({
       ) || "No Match";
     // console.log(existing);
 
-    if (existing !== "No Match" && newPhone != "") {
+    if (existing !== "No Match" && newPhone !== "") {
       if (
         window.confirm(
           `${newName} is already added; do you want to update the phone number?`
@@ -43,6 +43,7 @@ const AddPersonForm = ({
           })
           .catch((error) => {
             console.log("something went wrong", error);
+            setMessage({ action: "error", text: error.response.data.error });
           });
         return;
       } else {
@@ -51,14 +52,23 @@ const AddPersonForm = ({
     }
     if (newPhone !== "") {
       const newPersonObject = { name: newName, number: newPhone };
-      phonebookService.create(newPersonObject).then((returnPerson) => {
-        const returned = returnPerson;
-        setPersons(persons.concat(returned));
-        setNewPhone("");
-        setNewName("");
-        setMessage({ action: "added", text: returned.name });
-        // alert(`${returnPerson.name} added to the list`);
-      });
+      phonebookService
+        .create(newPersonObject)
+        .then((returnPerson) => {
+          const returned = returnPerson;
+          setPersons(persons.concat(returned));
+          setNewPhone("");
+          setNewName("");
+          setMessage({ action: "added", text: returned.name });
+          // alert(`${returnPerson.name} added to the list`);
+        })
+        .catch((error) => {
+          setMessage({
+            action: "error",
+            text: "Something went wrong. Remember to use proper format for name and number",
+          });
+          console.log(error.response);
+        });
     }
   };
 

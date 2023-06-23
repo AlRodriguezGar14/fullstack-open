@@ -37,6 +37,7 @@ const remove = (id) => {
     })
     .catch((error) => {
       console.log("fail");
+      return error;
     });
 };
 

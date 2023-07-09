@@ -96,10 +96,10 @@ test("get the author with most number of blogs", () => {
   });
 });
 
-// test("get the author with most number of likes", () => {
-//   const result = listHelper.mostLikes(blogs);
-//   expect(result).toStrictEqual({
-//     author: "Edsger W. Dijkstra",
-//     likes: 17,
-//   });
-// });
+test("get the author with most number of likes", () => {
+  const result = listHelper.mostLikedAuthor(blogs);
+  expect(result).toStrictEqual({
+    author: "Edsger W. Dijkstra",
+    likes: 17,
+  });
+});

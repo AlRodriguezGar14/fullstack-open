@@ -55,10 +55,47 @@ const getMostPostsAutor = (groupedList) => {
   return mostPostsAutor;
 };
 
+const mostLikedAuthor = (blogs) => {
+  // Group the likes per each author
+  grouped = blogs.reduce((group, entry) => {
+    const author = entry.author;
+    group[author] = group[author] ?? [];
+    group[author].push(entry.likes);
+    return group;
+  }, {});
+
+  // Sum the likes to see which actor has more likes
+  let authorsWithTotalLikes = [];
+  const arrayOfLikesPerAuthor = 1;
+  Object.entries(grouped).forEach((entry) => {
+    entry[arrayOfLikesPerAuthor] = entry[arrayOfLikesPerAuthor].reduce(
+      (acc, curr) => acc + curr
+    );
+    authorsWithTotalLikes.push(entry);
+  });
+
+  // Return the author with most likes
+  let mostLiked = { autor: null, likes: 0 };
+  const authorPostition = 0;
+  const likesPosition = 1;
+  for (let i = 0; i < authorsWithTotalLikes.length; i++) {
+    const curr = authorsWithTotalLikes[i];
+
+    curr[1] > mostLiked.likes
+      ? (mostLiked = {
+          author: curr[authorPostition],
+          likes: curr[likesPosition],
+        })
+      : null;
+  }
+  return mostLiked;
+};
+
 //
 module.exports = {
   dummy,
   totalLikes,
   favBlog,
   mostPosts,
+  mostLikedAuthor,
 };

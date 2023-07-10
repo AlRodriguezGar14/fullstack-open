@@ -27,10 +27,10 @@ test("post succesfully creates valid posts", async () => {
   const initialResponse = await api.get("/api/blogs");
 
   const newBlog = {
-    title: "testing blog",
+    title: "post blog test",
     author: "testing library",
     url: "www.tojest.com",
-    likes: 0,
+    likes: 10,
   };
 
   await api
@@ -42,8 +42,29 @@ test("post succesfully creates valid posts", async () => {
   const newResponse = await api.get("/api/blogs");
   expect(newResponse.body).toHaveLength(initialResponse.body.length + 1);
   expect(newResponse.body[newResponse.body.length - 1].title).toContain(
-    "testing"
+    "post blog test"
   );
+});
+
+test("if not likes in the body, likes = 0", async () => {
+  const newBlog = {
+    title: "blog with no likes test",
+    author: "testing library",
+    url: "www.tojest.com",
+  };
+
+  const res = await api.post("/api/blogs").send(newBlog).expect(201);
+
+  expect(res.body.likes).toBe(0);
+});
+
+test("not post the blog if url or title is missing", async () => {
+  const newBlog = {
+    title: "blog with no url test",
+    author: "testing library",
+  };
+
+  await api.post("/api/blogs").send(newBlog).expect(400);
 });
 
 afterAll(async () => {

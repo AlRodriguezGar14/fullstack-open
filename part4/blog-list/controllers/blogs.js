@@ -22,6 +22,16 @@ blogsRouter.get("/", async (request, response) => {
 //
 blogsRouter.post("/", async (request, response) => {
   const blog = new Blog(request.body);
+  if (blog.likes === undefined) {
+    blog.likes = 0;
+  }
+
+  if (blog.url === undefined || blog.title === undefined) {
+    response
+      .status(400)
+      .json({ status: 400, message: "information is missing" });
+    return;
+  }
   const savedBlog = await blog.save();
   response.status(201).json(savedBlog);
 });

@@ -75,6 +75,14 @@ describe("mutate the blog posts by id", () => {
 
     await api.delete(`/api/blogs/${id}`).expect(204);
   });
+  test("update the likes of a blog based on the url", async () => {
+    const id = "64ac345abc3a6de5dc98256f";
+    const likes = { likes: 5 };
+
+    const res = await api.put(`/api/blogs/${id}`).send(likes);
+
+    expect(res.body.likes).toBe(5);
+  });
 });
 
 afterAll(async () => {

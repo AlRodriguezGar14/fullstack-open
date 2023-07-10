@@ -21,8 +21,8 @@ test("there is one blog post", async () => {
   expect(response.body).toHaveLength(1);
 });
 
-// test("the first blog is about HTTP methods", async () => {
-//   const response = await api.get("/api/notes");
-//
-//   expect(response.body[0].content).toBe("HTML is easy");
-// });
+test("verify there is id", async () => {
+  const res = await api.get("/api/blogs");
+
+  expect(res.body[0].id).toBeDefined();
+});

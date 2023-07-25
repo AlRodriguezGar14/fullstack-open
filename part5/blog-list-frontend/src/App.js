@@ -9,7 +9,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [readPassword, setReadPassword] = useState(false);
   const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
 
   const [blogPost, setBlogPost] = useState({
     title: "",
@@ -100,9 +100,11 @@ const App = () => {
     try {
       const response = await blogService.create(blogPost);
       setBlogs(blogs.concat(response));
+      setMessage(`new blog created: ${blogPost.title} by ${blogPost.author}`);
+      setTimeout(() => setMessage(null), 5000);
     } catch (error) {
-      setErrorMessage("Your blog was not published. Something went wrong");
-      setTimeout(() => setErrorMessage(null), 500);
+      setMessage("Your blog was not published. Something went wrong");
+      setTimeout(() => setMessage(null), 5000);
     }
   };
 
@@ -117,10 +119,10 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setErrorMessage("Wrong credentials");
+      setMessage("Wrong username or password");
       setUser(null);
       setTimeout(() => {
-        setErrorMessage(null);
+        setMessage(null);
       }, 5000);
     }
   };
@@ -148,7 +150,9 @@ const App = () => {
 
   return (
     <div>
-      {errorMessage !== null ? <p>{errorMessage}</p> : null}
+      {message !== null ? (
+        <p style={{ padding: "20px", backgroundColor: "grey" }}>{message}</p>
+      ) : null}
       {user === null ? (
         loginForm()
       ) : (

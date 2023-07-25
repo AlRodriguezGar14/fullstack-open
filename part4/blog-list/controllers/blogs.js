@@ -20,8 +20,9 @@ blogsRouter.get("/", async (request, response) => {
 blogsRouter.post("/", async (request, response) => {
   const body = request.body;
 
+  let decodedToken = null;
   try {
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+    decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
   } catch (e) {
     console.error({ error: e.message });
     return response.send(e).status(400);

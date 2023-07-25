@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
+import loginService from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -8,6 +9,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [readPassword, setReadPassword] = useState(false);
   const [user, setUser] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const loginForm = () => (
     <>
@@ -66,9 +68,21 @@ const App = () => {
     console.log("sumitting blog...");
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
-    console.log(`logging in with ${username} ${password}`);
+    try {
+      const usr = await loginService.login({ username, password });
+      setUser(usr);
+      console.log(usr);
+      setUsername("");
+      setPassword("");
+    } catch (exception) {
+      setErrorMessage("Wrong credentials");
+      setUser(null);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
   };
   const passwordFormType = readPassword === false ? "password" : "text";
 
@@ -78,11 +92,19 @@ const App = () => {
 
   return (
     <div>
-      {user === null ? loginForm() : blogForm()}
-      <h2>blogs</h2>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
+      {errorMessage !== null ? <p>{errorMessage}</p> : null}
+      {user === null ? (
+        loginForm()
+      ) : (
+        <div>
+          <p>logged as {user.username}</p>
+          {blogForm()}
+          <h2>blogs</h2>
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import blogService from "../services/blogs";
 
-const Blog = ({ blog, handleBlogLikes }) => {
+const Blog = ({ blog, handleBlogLikes, handleRemoveBlog, loggedUser }) => {
   const [showBlog, setShowBlog] = useState(false);
   const showHide = { display: showBlog ? "" : "none" };
 
@@ -10,7 +10,7 @@ const Blog = ({ blog, handleBlogLikes }) => {
     <div
       style={{
         boxShadow: "0 0 3px 2px black",
-        padding: "5px 15px",
+        padding: "15px 20px",
         marginBottom: "10px",
       }}
     >
@@ -30,6 +30,11 @@ const Blog = ({ blog, handleBlogLikes }) => {
         <p>{blog.likes}</p>
         <button onClick={(event) => handleBlogLikes(event, blog)}>Like</button>
         <p>{blog.user.username}</p>
+        {loggedUser === blog.user.username ? (
+          <button onClick={(event) => handleRemoveBlog(event, blog)}>
+            Delete this post
+          </button>
+        ) : null}
       </section>
     </div>
   );

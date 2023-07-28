@@ -38,11 +38,35 @@ const App = () => {
     try {
       const response = await blogService.create(blogPost);
       setBlogs(blogs.concat(response));
+      setBlogPost({
+        title: "",
+        author: "",
+        url: "",
+        likes: 0,
+      });
+      setContentUpdate(Math.floor(Math.random() * 100000));
       setMessage(`new blog created: ${blogPost.title} by ${blogPost.author}`);
       setTimeout(() => setMessage(null), 5000);
-      setContentUpdate(contentUpdate + 1);
     } catch (error) {
       setMessage("Your blog was not published. Something went wrong");
+      setTimeout(() => setMessage(null), 5000);
+    }
+  };
+
+  const handleRemoveBlog = async (event, currentBlog) => {
+    event.preventDefault();
+    window.confirm(
+      `Do you really want to remove the blog post ${currentBlog.title} by ${currentBlog.author}?`
+    );
+
+    try {
+      const response = blogService.removePost(currentBlog.id);
+      setBlogs(blogs.filter((blog) => blog.id !== currentBlog.id));
+      // setContentUpdate(Math.floor(Math.random() * 100000));
+      setMessage(`The blog ${currentBlog.title} has been removed`);
+      setTimeout(() => setMessage(null), 5000);
+    } catch (error) {
+      setMessage("The blog could not be removed");
       setTimeout(() => setMessage(null), 5000);
     }
   };
@@ -121,7 +145,7 @@ const App = () => {
           loginVisible={loginVisible}
           setNewBlogVisibility={setNewBlogVisibility}
           newBlogVisibility={newBlogVisibility}
-          setReadPassword={readPassword}
+          setReadPassword={setReadPassword}
           logBtnVisiblity={logBtnVisiblity}
           loginFormVisibility={loginFormVisibility}
           handleLogin={handleLogin}
@@ -149,7 +173,13 @@ const App = () => {
       )}
       <h2>blogs</h2>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} handleBlogLikes={handleBlogLikes} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleBlogLikes={handleBlogLikes}
+          handleRemoveBlog={handleRemoveBlog}
+          loggedUser={user.username}
+        />
       ))}
     </div>
   );

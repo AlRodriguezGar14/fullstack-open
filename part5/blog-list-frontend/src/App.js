@@ -50,10 +50,18 @@ const App = () => {
   const handleBlogLikes = async (event, blog) => {
     event.preventDefault();
     const newBlog = { ...blog, likes: blog.likes + 1 };
+    const blogsCopy = [...blogs];
+    const newBlogList = blogsCopy.map((blog) => {
+      if (blog.id === newBlog.id) {
+        blog = newBlog;
+      }
+      return blog;
+    });
+    setBlogs(newBlogList);
 
     try {
       const response = await blogService.update(blog.id, newBlog);
-      setContentUpdate(contentUpdate + 1);
+      // setContentUpdate(contentUpdate + 1);
     } catch (error) {
       console.error(error);
     }

@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-const Blog = ({ blog }) => {
+import blogService from "../services/blogs";
+
+const Blog = ({ blog, handleBlogLikes }) => {
   const [showBlog, setShowBlog] = useState(false);
   const showHide = { display: showBlog ? "" : "none" };
 
@@ -26,6 +28,7 @@ const Blog = ({ blog }) => {
       <section style={showHide}>
         <p>{blog.url}</p>
         <p>{blog.likes}</p>
+        <button onClick={(event) => handleBlogLikes(event, blog)}>Like</button>
         <p>{blog.user.username}</p>
       </section>
     </div>

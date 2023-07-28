@@ -13,6 +13,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
   const [loginVisible, setLoginVisible] = useState(false);
+  const [contentUpdate, setContentUpdate] = useState(null);
 
   const [newBlogVisibility, setNewBlogVisibility] = useState(false);
 
@@ -39,9 +40,22 @@ const App = () => {
       setBlogs(blogs.concat(response));
       setMessage(`new blog created: ${blogPost.title} by ${blogPost.author}`);
       setTimeout(() => setMessage(null), 5000);
+      setContentUpdate(contentUpdate + 1);
     } catch (error) {
       setMessage("Your blog was not published. Something went wrong");
       setTimeout(() => setMessage(null), 5000);
+    }
+  };
+
+  const handleBlogLikes = async (event, blog) => {
+    event.preventDefault();
+    const newBlog = { ...blog, likes: blog.likes + 1 };
+
+    try {
+      const response = await blogService.update(blog.id, newBlog);
+      setContentUpdate(contentUpdate + 1);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -73,7 +87,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then((fetched) => setBlogs(fetched));
-  }, [blogs]);
+  }, [contentUpdate]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -124,7 +138,7 @@ const App = () => {
       )}
       <h2>blogs</h2>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleBlogLikes={handleBlogLikes} />
       ))}
     </div>
   );

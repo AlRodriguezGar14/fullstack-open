@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import BlogForm from "./components/BlogForm";
+import LoginForm from "./components/LoginForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -13,9 +15,6 @@ const App = () => {
   const [loginVisible, setLoginVisible] = useState(false);
 
   const [newBlogVisibility, setNewBlogVisibility] = useState(false);
-
-  const newBlogVisible = { display: newBlogVisibility ? "" : "none" };
-  const newBlogBtnVisible = { display: newBlogVisibility ? "none" : "" };
 
   const loginFormVisibility = {
     display: loginVisible ? "" : "none",
@@ -31,121 +30,6 @@ const App = () => {
     url: "",
     likes: 0,
   });
-
-  const toggleLoginVisibility = (e) => {
-    e.preventDefault();
-    setLoginVisible(!loginVisible);
-  };
-
-  const toggleNewBlogVisibility = (e) => {
-    e.preventDefault();
-    setNewBlogVisibility(!newBlogVisibility);
-    console.log(newBlogVisibility);
-  };
-
-  const loginForm = () => (
-    <>
-      <button
-        type="submit"
-        onClick={toggleLoginVisibility}
-        style={logBtnVisiblity}
-      >
-        Log In
-      </button>
-      <div className="form" style={loginFormVisibility}>
-        <h2>login</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input
-              type={passwordFormType}
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">Login</button>
-          <button type="submit" onClick={toggleLoginVisibility}>
-            Cancel
-          </button>
-          <button
-            type="submit"
-            onClick={toggleReadPassword}
-            style={{ margin: "10px" }}
-          >
-            Show / Hide the password
-          </button>
-        </form>
-      </div>
-    </>
-  );
-
-  const blogForm = () => (
-    <>
-      <button
-        type="submit"
-        onClick={toggleNewBlogVisibility}
-        style={newBlogBtnVisible}
-      >
-        New Blog
-      </button>
-      <div className="NewBlogForm" style={newBlogVisible}>
-        <h2>Add a blog</h2>
-        <form onSubmit={handleBlogSubmit}>
-          title
-          <input
-            type="text"
-            value={blogPost["title"]}
-            onChange={(event) =>
-              setBlogPost({ ...blogPost, title: event.target.value })
-            }
-          />
-          author
-          <input
-            type="text"
-            value={blogPost["author"]}
-            onChange={(event) =>
-              setBlogPost({ ...blogPost, author: event.target.value })
-            }
-          />
-          url
-          <input
-            type="text"
-            value={blogPost["url"]}
-            onChange={(event) =>
-              setBlogPost({ ...blogPost, url: event.target.value })
-            }
-          />
-          likes
-          <input
-            type="number"
-            value={blogPost["likes"]}
-            onChange={(event) =>
-              setBlogPost({ ...blogPost, likes: event.target.value })
-            }
-          />
-          <button type="submit">Submit</button>
-          <button type="submit" onClick={toggleNewBlogVisibility}>
-            Cancel
-          </button>
-        </form>
-      </div>
-    </>
-  );
-
-  const toggleReadPassword = (event) => {
-    event.preventDefault();
-    setReadPassword(!readPassword);
-  };
 
   const handleBlogSubmit = async (event) => {
     event.preventDefault();
@@ -186,7 +70,6 @@ const App = () => {
     blogService.setToken("");
     window.localStorage.removeItem("loggedBlogappUser");
   };
-  const passwordFormType = readPassword === false ? "password" : "text";
 
   useEffect(() => {
     blogService.getAll().then((fetched) => setBlogs(fetched));
@@ -207,17 +90,38 @@ const App = () => {
         <p style={{ padding: "20px", backgroundColor: "grey" }}>{message}</p>
       ) : null}
       {user === null ? (
-        loginForm()
+        <LoginForm
+          key={"uniqueLoginFormKey"}
+          setLoginVisible={setLoginVisible}
+          loginVisible={loginVisible}
+          setNewBlogVisibility={setNewBlogVisibility}
+          newBlogVisibility={newBlogVisibility}
+          setReadPassword={readPassword}
+          logBtnVisiblity={logBtnVisiblity}
+          loginFormVisibility={loginFormVisibility}
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+          readPassword={readPassword}
+        />
       ) : (
         <div>
           <div>
             <p>logged as {user.username}</p>
             <button onClick={handleLogout}>logout</button>
           </div>
-          {blogForm()}
+          <BlogForm
+            key={"uniqueBlogFormID"}
+            newBlogVisibility={newBlogVisibility}
+            setNewBlogVisibility={setNewBlogVisibility}
+            handleBlogSubmit={handleBlogSubmit}
+            blogPost={blogPost}
+            setBlogPost={setBlogPost}
+          />
         </div>
       )}
-
       <h2>blogs</h2>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />

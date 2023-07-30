@@ -60,7 +60,7 @@ const App = () => {
     );
 
     try {
-      const response = blogService.removePost(currentBlog.id);
+      blogService.removePost(currentBlog.id);
       setBlogs(blogs.filter((blog) => blog.id !== currentBlog.id));
       // setContentUpdate(Math.floor(Math.random() * 100000));
       setMessage(`The blog ${currentBlog.title} has been removed`);
@@ -84,7 +84,7 @@ const App = () => {
     setBlogs(newBlogList);
 
     try {
-      const response = await blogService.update(blog.id, newBlog);
+      await blogService.update(blog.id, newBlog);
       // setContentUpdate(contentUpdate + 1);
     } catch (error) {
       console.error(error);

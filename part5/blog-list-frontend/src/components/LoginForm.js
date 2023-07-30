@@ -1,8 +1,8 @@
+import PropTypes from "prop-types";
+
 const LoginForm = ({
   setLoginVisible,
   loginVisible,
-  setNewBlogVisibility,
-  newBlogVisibility,
   setReadPassword,
   logBtnVisiblity,
   loginFormVisibility,
@@ -70,4 +70,11 @@ const LoginForm = ({
     </>
   );
 };
+
+LoginForm.propTypes = {
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  handleLogin: PropTypes.func.isRequired,
+};
+
 export default LoginForm;

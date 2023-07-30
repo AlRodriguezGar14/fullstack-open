@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import blogService from "../services/blogs";
-
 const Blog = ({ blog, handleBlogLikes, handleRemoveBlog, loggedUser }) => {
   const [showBlog, setShowBlog] = useState(false);
   const showHide = { display: showBlog ? "" : "none" };
@@ -16,7 +14,7 @@ const Blog = ({ blog, handleBlogLikes, handleRemoveBlog, loggedUser }) => {
     >
       <section>
         <p>
-          "{blog.title}" by {blog.author}
+          &quot;{blog.title}&quot; by {blog.author}
         </p>
         <BlogShowBtn
           key={"showBlogUniqueBtn"}
@@ -40,7 +38,7 @@ const Blog = ({ blog, handleBlogLikes, handleRemoveBlog, loggedUser }) => {
   );
 };
 
-const BlogShowBtn = ({ showBlog, setShowBlog, blog }) => {
+const BlogShowBtn = ({ showBlog, setShowBlog }) => {
   const content = showBlog ? "hide" : "show more";
 
   const handleBlogShow = (e) => {

@@ -35,3 +35,16 @@ test("when clicking, renders the whole content", async () => {
   expect(container).toHaveTextContent(blog.likes);
   expect(container).toHaveTextContent(blog.url);
 });
+
+test("click multiple times like btn works", async () => {
+  const mockHandler = jest.fn();
+  render(<Blog blog={blog} handleBlogLikes={mockHandler} />);
+  const user = userEvent.setup();
+  const button = screen.getByText("show more");
+  await user.click(button);
+
+  const likeBtn = screen.getByText("Like");
+  await user.click(likeBtn);
+  await user.click(likeBtn);
+  expect(mockHandler.mock.calls).toHaveLength(2);
+});

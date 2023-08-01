@@ -8,44 +8,28 @@ const blog = {
   title: "Component testing is done with react testing library",
   author: "test library",
   url: "www.test.es",
+  likes: 100,
   user: {
     username: "mr tests",
     name: "el testeador",
     passwordHash: "fhsajkflhsfkljshflaksfhjsaklf",
   },
 };
-const mockHandler = jest.fn();
 
-test("renders content", () => {
-  const { container } = render(
-    <Blog blog={blog} handleBlogLikes={mockHandler} />
-  );
-
+test("renders the default content", () => {
+  const { container } = render(<Blog blog={blog} />);
+  const hiddenSection = container.querySelector(".toggable");
   expect(container).toHaveTextContent(blog.title);
-  expect(container).toHaveTextContent(
-    "test libraryshow morewww.test.esLikemr tests"
-  );
-  expect(container).toHaveTextContent(
-    "test libraryshow morewww.test.esLikemr tests"
-  );
+  expect(container).toHaveTextContent(blog.author);
+  expect(hiddenSection).toHaveStyle("display: none");
 });
 
-test("clicking the button calls event handler once", async () => {
-  const blog = {
-    title: "Component testing is done with react testing library",
-    author: "test library",
-    url: "www.test.es",
-    user: {
-      username: "mr tests",
-      name: "el testeador",
-      passwordHash: "fhsajkflhsfkljshflaksfhjsaklf",
-    },
-  };
-  const mockHandler = jest.fn();
-  render(<Blog blog={blog} handleBlogLikes={mockHandler} />);
-
-  const user = userEvent.setup();
-  const button = screen.getByText("Like");
-  await user.click(button);
-  expect(mockHandler.mock.calls).toHaveLength(1);
-});
+// test("when clicking, renders the whole content", async () => {
+//   let container = render(<Blog blog={blog} handleBlogLikes={mockHandler} />);
+//   const user = userEvent.setup();
+//   const button = screen.getByText("show more");
+//   await user.click(button);
+//   // expect(container).toHaveTextContent(blog.likes);
+//   screen.debug();
+// });
+//

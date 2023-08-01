@@ -23,8 +23,8 @@ const Blog = ({ blog, handleBlogLikes, handleRemoveBlog, loggedUser }) => {
           blog={blog}
         />
       </section>
-      <section style={showHide}>
-        <p className="blogUrl">{blog.url}</p>
+      <section className="toggable" style={showHide}>
+        <p>{blog.url}</p>
         <p>{blog.likes}</p>
         <button onClick={(event) => handleBlogLikes(event, blog)}>Like</button>
         <p>{blog.user.username}</p>
@@ -46,7 +46,11 @@ const BlogShowBtn = ({ showBlog, setShowBlog }) => {
     setShowBlog(!showBlog);
   };
 
-  return <button onClick={handleBlogShow}>{content}</button>;
+  return (
+    <button className="showContent" onClick={handleBlogShow}>
+      {content}
+    </button>
+  );
 };
 
 export default Blog;

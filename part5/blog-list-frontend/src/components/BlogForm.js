@@ -1,3 +1,5 @@
+// import { useState } from "react";
+
 const BlogForm = ({
   newBlogVisibility,
   handleBlogSubmit,
@@ -5,6 +7,8 @@ const BlogForm = ({
   blogPost,
   setBlogPost,
 }) => {
+  // uncomment this to make the test work
+  // const [blogPost, setBlogPost] = useState("");
   const toggleNewBlogVisibility = (e) => {
     e.preventDefault();
     setNewBlogVisibility(!newBlogVisibility);
@@ -28,6 +32,7 @@ const BlogForm = ({
         <form onSubmit={handleBlogSubmit}>
           title
           <input
+            id="title"
             type="text"
             value={blogPost["title"]}
             onChange={(event) =>
@@ -36,6 +41,7 @@ const BlogForm = ({
           />
           author
           <input
+            id="author"
             type="text"
             value={blogPost["author"]}
             onChange={(event) =>
@@ -44,6 +50,7 @@ const BlogForm = ({
           />
           url
           <input
+            id="url"
             type="text"
             value={blogPost["url"]}
             onChange={(event) =>
@@ -52,6 +59,7 @@ const BlogForm = ({
           />
           likes
           <input
+            id="likes"
             type="number"
             value={blogPost["likes"]}
             onChange={(event) =>

@@ -24,12 +24,14 @@ test("renders the default content", () => {
   expect(hiddenSection).toHaveStyle("display: none");
 });
 
-// test("when clicking, renders the whole content", async () => {
-//   let container = render(<Blog blog={blog} handleBlogLikes={mockHandler} />);
-//   const user = userEvent.setup();
-//   const button = screen.getByText("show more");
-//   await user.click(button);
-//   // expect(container).toHaveTextContent(blog.likes);
-//   screen.debug();
-// });
-//
+test("when clicking, renders the whole content", async () => {
+  let { container } = render(<Blog blog={blog} />);
+  const user = userEvent.setup();
+  const button = screen.getByText("show more");
+  await user.click(button);
+
+  const hiddenSection = container.querySelector(".toggable");
+  expect(hiddenSection).toHaveStyle("diplay: ");
+  expect(container).toHaveTextContent(blog.likes);
+  expect(container).toHaveTextContent(blog.url);
+});

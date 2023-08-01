@@ -158,7 +158,7 @@ const App = () => {
       ) : (
         <div>
           <div>
-            <p>logged as {user.username}</p>
+            <p>logged as {user?.username}</p>
             <button onClick={handleLogout}>logout</button>
           </div>
           <BlogForm
@@ -178,7 +178,7 @@ const App = () => {
           blog={blog}
           handleBlogLikes={handleBlogLikes}
           handleRemoveBlog={handleRemoveBlog}
-          loggedUser={user.username}
+          loggedUser={user?.username}
         />
       ))}
     </div>

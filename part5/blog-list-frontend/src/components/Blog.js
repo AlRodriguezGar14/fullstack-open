@@ -24,7 +24,7 @@ const Blog = ({ blog, handleBlogLikes, handleRemoveBlog, loggedUser }) => {
         />
       </section>
       <section style={showHide}>
-        <p>{blog.url}</p>
+        <p className="blogUrl">{blog.url}</p>
         <p>{blog.likes}</p>
         <button onClick={(event) => handleBlogLikes(event, blog)}>Like</button>
         <p>{blog.user.username}</p>

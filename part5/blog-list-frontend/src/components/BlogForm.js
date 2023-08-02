@@ -21,6 +21,7 @@ const BlogForm = ({
   return (
     <>
       <button
+        id="displayBlogForm"
         type="submit"
         onClick={toggleNewBlogVisibility}
         style={newBlogBtnVisible}
@@ -66,7 +67,9 @@ const BlogForm = ({
               setBlogPost({ ...blogPost, likes: event.target.value })
             }
           />
-          <button type="submit">Submit</button>
+          <button id="submitBlog" type="submit">
+            Submit
+          </button>
           <button type="submit" onClick={toggleNewBlogVisibility}>
             Cancel
           </button>

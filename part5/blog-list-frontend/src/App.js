@@ -119,8 +119,10 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then((fetched) => {
-      fetched.sort((a, b) => b.likes - a.likes);
-      setBlogs(fetched);
+      if (fetched) {
+        fetched.sort((a, b) => b.likes - a.likes);
+        setBlogs(fetched);
+      }
     });
   }, [contentUpdate]);
 

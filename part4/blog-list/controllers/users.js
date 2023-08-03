@@ -4,11 +4,17 @@ const User = require("../models/user");
 
 usersRouter.post("/", async (req, res) => {
   const { username, name, password } = req.body;
-
-  if (!password || !username) {
+  if (!username) {
     res.status(400).json({
       status: 400,
-      message: "Double check that you added password and username",
+      message: "Double check that you added a username",
+    });
+    return;
+  }
+  if (!password) {
+    res.status(400).json({
+      status: 400,
+      message: "Double check that you added a password",
     });
     return;
   }

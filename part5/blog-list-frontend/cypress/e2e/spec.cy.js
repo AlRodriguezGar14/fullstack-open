@@ -1,11 +1,18 @@
 describe("Blogs app", function () {
   beforeEach(function () {
     cy.request("POST", "http://localhost:3003/api/testing/reset");
+    const user = {
+      username: "user1234",
+      name: "someone",
+      password: "1234",
+    };
+    cy.request("POST", "http://localhost:3003/api/users", user);
     cy.visit("http://localhost:3000");
   });
   it("front page can be opened", function () {
     cy.contains("blogs");
-    cy.contains("blog created with user token2");
+    // there are no blogs as the page is empty due to using reset
+    // cy.contains("blog created with user token2");
   });
 
   it("login fails with wrong credentials", function () {

@@ -34,7 +34,10 @@ const Blog = ({ blog, handleBlogLikes, handleRemoveBlog, loggedUser }) => {
         </button>
         <p>{blog.user.username}</p>
         {loggedUser === blog.user.username ? (
-          <button onClick={(event) => handleRemoveBlog(event, blog)}>
+          <button
+            id="deletePost"
+            onClick={(event) => handleRemoveBlog(event, blog)}
+          >
             Delete this post
           </button>
         ) : null}

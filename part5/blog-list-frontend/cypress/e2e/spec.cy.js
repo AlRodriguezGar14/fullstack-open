@@ -77,6 +77,22 @@ describe("Blogs app", function () {
         cy.get("#showContent").click();
         cy.get("#deletePost").should("not.exist");
       });
+      beforeEach(function () {
+        const blog = {
+          title: "most likes",
+          author: "auth",
+          url: "https://mostlikes.com",
+          likes: 10000,
+        };
+        cy.get("#title").type(blog.title);
+        cy.get("#author").type(blog.author);
+        cy.get("#url").type(blog.url);
+        cy.get("#likes").type(blog.likes);
+        cy.get("#submitBlog").click();
+      });
+      it("blogs are ordered by likes", function () {
+        cy.get(".blog").eq(0).contains("most likes");
+      });
     });
   });
 });

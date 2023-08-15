@@ -6,6 +6,7 @@ const Blog = ({ blog, handleBlogLikes, handleRemoveBlog, loggedUser }) => {
 
   return (
     <div
+      className="blog"
       style={{
         boxShadow: "0 0 3px 2px black",
         padding: "15px 20px",

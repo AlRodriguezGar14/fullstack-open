@@ -161,7 +161,9 @@ const App = () => {
         <div>
           <div>
             <p>logged as {user?.username}</p>
-            <button onClick={handleLogout}>logout</button>
+            <button id="logoutButton" onClick={handleLogout}>
+              logout
+            </button>
           </div>
           <BlogForm
             key={"uniqueBlogFormID"}

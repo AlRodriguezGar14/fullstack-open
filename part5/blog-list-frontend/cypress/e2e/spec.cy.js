@@ -72,6 +72,11 @@ describe("Blogs app", function () {
         cy.get("#showContent").click();
         cy.get("#deletePost").click();
       });
+      it("only the user who created the blog can delete it", function () {
+        cy.get("#logoutButton").click();
+        cy.get("#showContent").click();
+        cy.get("#deletePost").should("not.exist");
+      });
     });
   });
 });

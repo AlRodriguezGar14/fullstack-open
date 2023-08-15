@@ -47,5 +47,27 @@ describe("Blogs app", function () {
       cy.get("#submitBlog").click();
       cy.contains("new blog created: title from test by author from test");
     });
+    describe("when a blog exists", function () {
+      beforeEach(function () {
+        const blog = {
+          title: "title from test",
+          author: "author from test",
+          url: "https://testing.com",
+          likes: 103,
+        };
+        cy.get("#displayBlogForm").click();
+        cy.get("#title").type(blog.title);
+        cy.get("#author").type(blog.author);
+        cy.get("#url").type(blog.url);
+        cy.get("#likes").type(blog.likes);
+        cy.get("#submitBlog").click();
+        cy.contains("author from test");
+      });
+      it("user can like the blog", function () {
+        cy.get("#showContent").click();
+        cy.get("#likeButton").click();
+        cy.contains(104);
+      });
+    });
   });
 });

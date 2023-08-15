@@ -26,7 +26,12 @@ const Blog = ({ blog, handleBlogLikes, handleRemoveBlog, loggedUser }) => {
       <section className="toggable" style={showHide}>
         <p>{blog.url}</p>
         <p>{blog.likes}</p>
-        <button onClick={(event) => handleBlogLikes(event, blog)}>Like</button>
+        <button
+          id="likeButton"
+          onClick={(event) => handleBlogLikes(event, blog)}
+        >
+          Like
+        </button>
         <p>{blog.user.username}</p>
         {loggedUser === blog.user.username ? (
           <button onClick={(event) => handleRemoveBlog(event, blog)}>
@@ -47,7 +52,7 @@ const BlogShowBtn = ({ showBlog, setShowBlog }) => {
   };
 
   return (
-    <button className="showContent" onClick={handleBlogShow}>
+    <button id="showContent" className="showContent" onClick={handleBlogShow}>
       {content}
     </button>
   );

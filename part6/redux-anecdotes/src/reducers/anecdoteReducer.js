@@ -28,8 +28,11 @@ const reducer = (state = initialState, action) => {
       const toUpvote = state.find((a) => a.id === id);
       const upvoted = { ...toUpvote, votes: toUpvote.votes + 1 };
       return state.map((anecdote) => (anecdote.id !== id ? anecdote : upvoted));
+    case "ADD":
+      const anecdote = action.payload;
+      anecdote.id = getId();
+      return state.concat(anecdote);
     default:
-      console.log("no upvote");
       return state;
   }
 

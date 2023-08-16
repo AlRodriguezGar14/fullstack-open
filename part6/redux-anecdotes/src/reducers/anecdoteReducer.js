@@ -17,6 +17,23 @@ const asObject = (anecdote) => {
   };
 };
 
+const sortByVotes = (anecdotes) => {
+  for (let i = 1; i < anecdotes.length; i++) {
+    let isSwapped = false;
+    for (let j = 1; j < anecdotes.length; j++) {
+      if (anecdotes[j].votes > anecdotes[j - 1].votes) {
+        const lower = anecdotes[j - 1];
+        const higher = anecdotes[j];
+        anecdotes[j - 1] = higher;
+        anecdotes[j] = lower;
+        isSwapped = true;
+      }
+    }
+    if (!isSwapped) break;
+  }
+  return anecdotes;
+};
+
 const initialState = anecdotesAtStart.map(asObject);
 
 const reducer = (state = initialState, action) => {
@@ -27,7 +44,10 @@ const reducer = (state = initialState, action) => {
       const id = action.payload.id;
       const toUpvote = state.find((a) => a.id === id);
       const upvoted = { ...toUpvote, votes: toUpvote.votes + 1 };
-      return state.map((anecdote) => (anecdote.id !== id ? anecdote : upvoted));
+      const updatedState = state.map((anecdote) =>
+        anecdote.id !== id ? anecdote : upvoted
+      );
+      return sortByVotes(updatedState);
     case "ADD":
       const anecdote = action.payload;
       anecdote.id = getId();

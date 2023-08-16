@@ -8,10 +8,19 @@ import { configureStore } from "@reduxjs/toolkit";
 const store = configureStore({ reducer: counterReducer });
 
 const App = () => {
+  // const good = () => {
+  //   store.dispatch({
+  //     type: "GOOD",
+  //   });
+  // };
+
+  // Here I can have only the type and the payload to simplify the component
+  const plusGood = () => {
+    return { type: "GOOD" };
+  };
+  // Here I can write the whole logic
   const good = () => {
-    store.dispatch({
-      type: "GOOD",
-    });
+    store.dispatch(plusGood());
   };
 
   const bad = () => {

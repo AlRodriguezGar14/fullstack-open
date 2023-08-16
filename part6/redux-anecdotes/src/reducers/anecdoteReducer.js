@@ -36,6 +36,14 @@ const sortByVotes = (anecdotes) => {
 
 const initialState = anecdotesAtStart.map(asObject);
 
+export const upvoteAction = (id) => {
+  return { type: "UPVOTE", payload: { id } };
+};
+
+export const addAnecdoteAction = (anecdote) => {
+  return { type: "ADD", payload: { content: anecdote, votes: 0 } };
+};
+
 const reducer = (state = initialState, action) => {
   console.log("state now: ", state);
   console.log("action", action);

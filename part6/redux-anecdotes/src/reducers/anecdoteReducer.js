@@ -34,7 +34,7 @@ const sortByVotes = (anecdotes) => {
   return anecdotes;
 };
 
-const initialState = anecdotesAtStart.map(asObject);
+const initialState = anecdotesAtStart.map((anecdote) => asObject(anecdote));
 
 export const upvoteAction = (id) => {
   return { type: "UPVOTE", payload: { id } };
@@ -44,7 +44,7 @@ export const addAnecdoteAction = (anecdote) => {
   return { type: "ADD", payload: { content: anecdote, votes: 0 } };
 };
 
-const reducer = (state = initialState, action) => {
+const anecdotesReducer = (state = initialState, action) => {
   console.log("state now: ", state);
   console.log("action", action);
   switch (action.type) {
@@ -67,4 +67,4 @@ const reducer = (state = initialState, action) => {
   // return state;
 };
 
-export default reducer;
+export default anecdotesReducer;

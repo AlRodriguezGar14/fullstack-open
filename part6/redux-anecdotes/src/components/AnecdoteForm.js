@@ -1,6 +1,17 @@
 import { addAnecdote } from "../reducers/anecdoteReducer";
 import { useDispatch } from "react-redux";
 
+import { printNotification } from "../reducers/notificationReducer";
+
+const notifyNewAnecdote = (anecdote) => {
+  console.log("anecdote is ", anecdote);
+  return {
+    action: "New anecdote: ",
+    content: anecdote,
+    display: true,
+  };
+};
+
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
   const newAnecdote = (e) => {
@@ -8,6 +19,12 @@ const AnecdoteForm = () => {
     const anecdote = e.target.anecdote.value;
     dispatch(addAnecdote(anecdote));
     e.target.anecdote.value = "";
+
+    dispatch(printNotification(notifyNewAnecdote(anecdote)));
+
+    setTimeout(() => {
+      dispatch(printNotification({ display: false }));
+    }, 5000);
   };
 
   return (

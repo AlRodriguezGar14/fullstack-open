@@ -1,15 +1,21 @@
 import { useSelector, useDispatch } from "react-redux";
-import { upvoteAction } from "../reducers/anecdoteReducer";
+
+import { upvoteAnecdote } from "../reducers/anecdoteReducer";
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes);
+  const anecdotes = useSelector((state) => state.anecdote);
   const filter = useSelector((state) => state.filter);
+
+  // const anecdotes = [
+  //   { content: "aaa", id: 1, votes: 0 },
+  //   { content: "bbbb", id: 2, votes: 1 },
+  // ];
 
   const dispatch = useDispatch();
 
   const vote = (id) => {
     console.log("vote", id);
-    dispatch(upvoteAction(id));
+    dispatch(upvoteAnecdote(id));
   };
 
   let filteredAnecdotes = anecdotes.filter((anecdote) =>

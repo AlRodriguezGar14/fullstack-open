@@ -1,13 +1,13 @@
-import { useSelector, useDispatch } from "react-redux";
-import { filterAction } from "../reducers/filterReducer";
-// import { upvoteAction } from "../reducers/anecdoteReducer";
+import { useDispatch } from "react-redux";
+import { filterAnecdotes } from "../reducers/filterReducer";
+
 const FilterForm = () => {
   // const filter = useSelector((state) => state.filter);
   const dispatch = useDispatch();
 
   const applyFilter = (e) => {
-    // console.log(e.target.value);
-    dispatch(filterAction(e.target.value));
+    console.log("le filter", e.target.value);
+    dispatch(filterAnecdotes(e.target.value));
   };
   return (
     <div>

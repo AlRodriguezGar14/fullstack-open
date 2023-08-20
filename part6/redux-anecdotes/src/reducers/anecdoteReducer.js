@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import anecdoteService from "../services/anecdotes";
+import { useDispatch } from "react-redux";
 
 // const anecdotesAtStart = [
 //   "If it hurts, do it more often",
@@ -55,4 +57,21 @@ const anecdoteSlice = createSlice({
 
 export const { upvoteAnecdote, addAnecdote, setAnecdotes } =
   anecdoteSlice.actions;
+
+// these return async (dispatch) functions work thanks to the redux-thunk library,
+// already integrated in the redux toolkit when using configureStore
+export const initializeAnecdotes = () => {
+  return async (dispatch) => {
+    const anecdotes = await anecdoteService.getAll();
+    dispatch(setAnecdotes(anecdotes));
+  };
+};
+
+export const createAnecdote = (anecdote) => {
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.createNew(anecdote);
+    dispatch(addAnecdote(newAnecdote));
+  };
+};
+
 export default anecdoteSlice.reducer;

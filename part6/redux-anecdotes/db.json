@@ -34,6 +34,11 @@
       "content": "This is an anecdote to the server",
       "votes": 0,
       "id": "diVttXC"
+    },
+    {
+      "content": "Async anecdote added",
+      "votes": 0,
+      "id": "MoZWkmA"
     }
   ]
 }

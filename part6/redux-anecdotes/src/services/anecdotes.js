@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const baseurl = "http://localhost:3001/anecdotes";
 
@@ -13,4 +14,18 @@ const createNew = async (content) => {
   return response.data;
 };
 
-export default { getAll, createNew };
+const upvote = async (anecdotes, id) => {
+  // const anecdotesUpdated = anecdotes.map((anecdote) => {
+  //   return anecdote.id === id
+  //     ? { ...anecdote, votes: anecdote.votes + 1 }
+  //     : anecdote;
+  // });
+  const upvotedAnecdote = anecdotes.find((anecdote) => anecdote.id === id);
+  const response = await axios.put(`${baseurl}/${id}`, {
+    ...upvotedAnecdote,
+    votes: upvotedAnecdote.votes + 1,
+  });
+  return response.data;
+};
+
+export default { getAll, createNew, upvote };

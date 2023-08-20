@@ -1,15 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
 
 import { upvoteAnecdotes } from "../reducers/anecdoteReducer";
-import { printNotification } from "../reducers/notificationReducer";
+import { displayNotification } from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
   const anecdotes = useSelector((state) => state.anecdote);
   const filter = useSelector((state) => state.filter);
-  // const anecdotes = [
-  //   { content: "aaa", id: 1, votes: 0 },
-  //   { content: "bbbb", id: 2, votes: 1 },
-  // ];
 
   const notifyUpvote = (id) => {
     const anecdoteIs = anecdotes.find((anecdote) => anecdote.id === id);
@@ -25,11 +21,8 @@ const AnecdoteList = () => {
   const vote = (id) => {
     console.log("vote", id);
     dispatch(upvoteAnecdotes(anecdotes, id));
-    dispatch(printNotification(notifyUpvote(id)));
-
-    setTimeout(() => {
-      dispatch(printNotification({ display: false }));
-    }, 5000);
+    const upvoteNotification = notifyUpvote(id);
+    dispatch(displayNotification(upvoteNotification, 10));
   };
 
   let filteredAnecdotes = anecdotes.filter((anecdote) =>

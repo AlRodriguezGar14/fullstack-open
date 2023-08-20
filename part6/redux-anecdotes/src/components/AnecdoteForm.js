@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 
 import { printNotification } from "../reducers/notificationReducer";
 
+import anecdoteService from "../services/anecdotes";
+
 const notifyNewAnecdote = (anecdote) => {
   console.log("anecdote is ", anecdote);
   return {
@@ -14,11 +16,14 @@ const notifyNewAnecdote = (anecdote) => {
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
-  const newAnecdote = (e) => {
+
+  const newAnecdote = async (e) => {
     e.preventDefault();
     const anecdote = e.target.anecdote.value;
-    dispatch(addAnecdote(anecdote));
     e.target.anecdote.value = "";
+
+    const newAnecdote = await anecdoteService.createNew(anecdote);
+    dispatch(addAnecdote(newAnecdote));
 
     dispatch(printNotification(notifyNewAnecdote(anecdote)));
 

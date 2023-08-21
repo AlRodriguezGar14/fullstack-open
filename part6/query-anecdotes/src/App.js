@@ -3,6 +3,8 @@ import Notification from "./components/Notification";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { getAnecdotes, upvoteAnecdote } from "./services/requests";
 
+import { useNotifDispatch } from "./NotificationContext";
+
 const App = () => {
   const queryClient = useQueryClient();
   const upvoteAnecdoteMutation = useMutation(upvoteAnecdote, {
@@ -11,12 +13,22 @@ const App = () => {
     },
   });
 
+  const dispatchNotification = useNotifDispatch();
+
   const handleVote = (anecdote) => {
     upvoteAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 });
+
+    dispatchNotification({
+      type: "UPVOTE",
+      payload: `Upvoted the anecdote... ${anecdote.content}`,
+    });
+    setTimeout(() => {
+      dispatchNotification({ type: "CLEAN" });
+    }, 5000);
   };
 
   const result = useQuery("anecdotes", getAnecdotes);
-  console.log(result);
+  // console.log(result);
 
   if (result.isLoading) {
     return <p>Loading your anecdotes...</p>;

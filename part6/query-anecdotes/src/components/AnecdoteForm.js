@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { createAnecdote } from "../services/requests";
+import { useNotifDispatch } from "../NotificationContext";
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient();
@@ -8,6 +9,7 @@ const AnecdoteForm = () => {
       queryClient.invalidateQueries("anecdotes");
     },
   });
+  const dispatchNotification = useNotifDispatch();
 
   const onCreate = (event) => {
     event.preventDefault();
@@ -15,6 +17,14 @@ const AnecdoteForm = () => {
     event.target.anecdote.value = "";
     console.log("new anecdote");
     newAnecdoteMutation.mutate({ content: content, votes: 0 });
+
+    dispatchNotification({
+      type: "POST",
+      payload: `New anecdote published: ${content}`,
+    });
+    setTimeout(() => {
+      dispatchNotification({ type: "CLEAN" });
+    }, 5000);
   };
 
   return (

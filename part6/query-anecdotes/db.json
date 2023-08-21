@@ -37,7 +37,7 @@
     },
     {
       "content": "new anecdote v2",
-      "votes": 0,
+      "votes": 1,
       "id": "PovC_MD"
     },
     {
@@ -49,6 +49,11 @@
       "content": "The notification for this note is going to be dealt with useReducer",
       "votes": 1,
       "id": "iLWyLiq"
+    },
+    {
+      "content": "This is a long anecdote",
+      "votes": 0,
+      "id": "2rIHU4b"
     }
   ]
 }

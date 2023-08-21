@@ -16,12 +16,24 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value;
     event.target.anecdote.value = "";
     console.log("new anecdote");
-    newAnecdoteMutation.mutate({ content: content, votes: 0 });
+    newAnecdoteMutation.mutate(
+      { content: content, votes: 0 },
+      {
+        onError: () => {
+          dispatchNotification({
+            type: "POST",
+            payload: "The anecdote is too short; must have length 5 or more",
+          });
+        },
+        onSuccess: () => {
+          dispatchNotification({
+            type: "POST",
+            payload: `New anecdote published: ${content}`,
+          });
+        },
+      }
+    );
 
-    dispatchNotification({
-      type: "POST",
-      payload: `New anecdote published: ${content}`,
-    });
     setTimeout(() => {
       dispatchNotification({ type: "CLEAN" });
     }, 5000);
